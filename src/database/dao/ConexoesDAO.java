@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import database.model.Conexoes;
+import database.model.Conexao;
 
 public class ConexoesDAO {
 	
@@ -17,15 +17,15 @@ public class ConexoesDAO {
 		pstSelect = conn.prepareStatement(select);
 	}
 	
-	public Conexoes select(int id) throws SQLException {
+	public Conexao select(int id) throws SQLException {
 		
-		Conexoes conexoes = null;
+		Conexao conexoes = null;
 		
 		pstSelect.setInt(1, id);
 		ResultSet resultado = pstSelect.executeQuery();
 		
 		if (resultado.next()) {
-			conexoes = new Conexoes();
+			conexoes = new Conexao();
 			conexoes.setId(resultado.getInt("id"));
 			conexoes.setEndereco_ip(resultado.getString("endereco_ip"));
 			conexoes.setEndereco_porta(resultado.getString("endereco_porta"));

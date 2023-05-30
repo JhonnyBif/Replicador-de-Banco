@@ -1,6 +1,6 @@
 package database.model;
 
-public class Conexoes {
+public class Conexao {
 	
 	private int id;
 	private String endereco_ip;
@@ -10,7 +10,7 @@ public class Conexoes {
 	private String nome_banco;
 	private String tipo_banco;
 	
-	public Conexoes() {
+	public Conexao() {
 		
 	}
 
