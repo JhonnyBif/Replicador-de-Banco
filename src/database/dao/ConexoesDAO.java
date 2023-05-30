@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.model.Conexao;
+import database.model.DatabaseKind;
 
 public class ConexoesDAO {
 	
-	private String select = "select * from tb_conexoes where id = ?";
+	private String select = "select * from connection where id = ?";
 	private PreparedStatement pstSelect;
 	
 	public ConexoesDAO(Connection conn) throws SQLException {
@@ -27,12 +28,12 @@ public class ConexoesDAO {
 		if (resultado.next()) {
 			conexoes = new Conexao();
 			conexoes.setId(resultado.getInt("id"));
-			conexoes.setEndereco_ip(resultado.getString("endereco_ip"));
-			conexoes.setEndereco_porta(resultado.getString("endereco_porta"));
-			conexoes.setUsuario(resultado.getString("usuario"));
-			conexoes.setSenha(resultado.getString("senha"));
-			conexoes.setNome_banco(resultado.getString("nome_banco"));
-			conexoes.setTipo_banco(resultado.getString("tipo_banco"));
+			conexoes.setAddress(resultado.getString("hostname"));
+			conexoes.setPort(resultado.getInt("port"));
+			conexoes.setUser(resultado.getString("user"));
+			conexoes.setPassword(resultado.getString("password"));
+			conexoes.setDatabase(resultado.getString("database"));
+			conexoes.setDatabaseKindId(DatabaseKind.valueOf(resultado.getString("database_kind_id")));
 		}
 		
 		return conexoes;

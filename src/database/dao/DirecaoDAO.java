@@ -10,7 +10,7 @@ import database.model.Direcao;
 
 public class DirecaoDAO {
 	
-	private String select = "select * from tb_direcao where id_processo = ? and habilitado";
+	private String select = "select * from direction where process_id = ? and active";
 	private PreparedStatement pstSelect;
 	
 	public DirecaoDAO(Connection conn) throws SQLException {
@@ -26,10 +26,10 @@ public class DirecaoDAO {
 		while (resultado.next()) {
 			Direcao direcao = new Direcao();
 			direcao.setId(resultado.getInt("id"));
-			direcao.setId_processo(resultado.getInt("id_processo"));
-			direcao.setId_conexao_origem(resultado.getInt("id_conexao_origem"));
-			direcao.setId_conexao_destino(resultado.getInt("id_conexao_destino"));
-			direcao.setHabilitado(resultado.getBoolean("habilitado"));
+			direcao.setProcessId(resultado.getInt("process_id"));
+			direcao.setOriginConnectionId(resultado.getInt("origin_connection_id"));
+			direcao.setDestinyConnectionId(resultado.getInt("destiny_connection_id"));
+			direcao.setActive(resultado.getBoolean("active"));
 			listaDirecao.add(direcao);
 		}
 		

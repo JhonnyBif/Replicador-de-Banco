@@ -14,7 +14,7 @@ public class ProcessoVerificar {
 		ArrayList<Processo> resultado = dao.selectAll();
 		
 		for (Processo p : resultado) {
-			System.out.println("O processo "+p.getNome_processo()+" encontra-se habilitado!!!");
+			System.out.println("O processo "+p.getName() +" encontra-se habilitado!!!");
 			DirecaoVerificar.execute(connectionControle, p.getId());
 		}
 	}

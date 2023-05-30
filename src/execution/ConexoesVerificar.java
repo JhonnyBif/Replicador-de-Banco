@@ -16,34 +16,34 @@ public class ConexoesVerificar {
 		// Faz a conexão no banco de controle ...
 		Connection connectionOrigem = ConnectionFactory.getConnection
 							(
-								conexoes.getEndereco_ip(), 
-								conexoes.getEndereco_porta(),
-								conexoes.getNome_banco(), 
-								conexoes.getUsuario(), 
-								conexoes.getSenha(), 
-								conexoes.getTipo_banco()
+								conexoes.getAddress(), 
+								conexoes.getPort().toString(),
+								conexoes.getDatabase(), 
+								conexoes.getUser(), 
+								conexoes.getPassword(), 
+								conexoes.getDatabaseKindId().name()
 							);
 		if (connectionOrigem != null) {
 			
 			conexoes = dao.select(id_conexao_destino);
 			Connection connectionDestino = ConnectionFactory.getConnection
 					(
-						conexoes.getEndereco_ip(), 
-						conexoes.getEndereco_porta(),
-						conexoes.getNome_banco(), 
-						conexoes.getUsuario(), 
-						conexoes.getSenha(), 
-						conexoes.getTipo_banco()
+						conexoes.getAddress(), 
+						conexoes.getPort().toString(),
+						conexoes.getDatabase(), 
+						conexoes.getUser(), 
+						conexoes.getPassword(), 
+						conexoes.getDatabaseKindId().name()
 					);
 			if (connectionDestino != null)	{
 				TabelasProcessar.execute(id_processo);
 			}
 			else {
-				System.out.println("Não foi possível conectar no banco destino: "+conexoes.getEndereco_ip()+":"+conexoes.getEndereco_porta());
+				System.out.println("Não foi possível conectar no banco destino: "+conexoes.getAddress()+":"+conexoes.getPort());
 			}
 		}
 		else {
-			System.out.println("Não foi possível conectar no banco origem: "+conexoes.getEndereco_ip()+":"+conexoes.getEndereco_porta());
+			System.out.println("Não foi possível conectar no banco origem: "+conexoes.getAddress()+":"+conexoes.getPort());
 		}
 	}
 }
