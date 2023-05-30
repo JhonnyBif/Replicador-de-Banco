@@ -3,12 +3,12 @@ package database.model;
 public class Conexao {
 	
 	private int id;
-	private String endereco_ip;
-	private String endereco_porta;
-	private String usuario;
-	private String senha;
-	private String nome_banco;
-	private String tipo_banco;
+	private String hostname;
+	private Integer port;
+	private String user;
+	private String password;
+	private String database;
+	private DatabaseKind databaseKindId;
 	
 	public Conexao() {
 		
@@ -22,52 +22,52 @@ public class Conexao {
 		this.id = id;
 	}
 
-	public String getEndereco_ip() {
-		return endereco_ip;
+	public String getAddress() {
+		return hostname;
 	}
 
-	public void setEndereco_ip(String endereco_ip) {
-		this.endereco_ip = endereco_ip;
+	public void setAddress(String address) {
+		this.hostname = address;
 	}
 
-	public String getEndereco_porta() {
-		return endereco_porta;
+	public Integer getPort() {
+		return port;
 	}
 
-	public void setEndereco_porta(String endereco_porta) {
-		this.endereco_porta = endereco_porta;
+	public void setPort(Integer port) {
+		this.port = port;
 	}
 
-	public String getUsuario() {
-		return usuario;
+	public String getUser() {
+		return user;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getTipo_banco() {
-		return tipo_banco;
+	public String getDatabase() {
+		return database;
 	}
 
-	public void setTipo_banco(String tipo_banco) {
-		this.tipo_banco = tipo_banco;
+	public void setDatabase(String database) {
+		this.database = database;
 	}
-	
-	public void setNome_banco(String nome_banco) {
-		this.nome_banco = nome_banco;
+
+	public DatabaseKind getDatabaseKindId() {
+		return databaseKindId;
 	}
-	
-	public String getNome_banco() {
-		return nome_banco;
+
+	public void setDatabaseKindId(DatabaseKind databaseKindId) {
+		this.databaseKindId = databaseKindId;
 	}
 
 }

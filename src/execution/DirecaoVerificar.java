@@ -14,7 +14,7 @@ public class DirecaoVerificar {
 		ArrayList<Direcao> resultado = dao.select(idProcesso);
 		
 		for (Direcao d : resultado) {
-			ConexoesVerificar.execute(connectionControle, d.getId_conexao_origem(), d.getId_conexao_destino(), idProcesso);
+			ConexoesVerificar.execute(connectionControle, d.getOriginConnectionId(), d.getDestinyConnectionId(), idProcesso);
 		}
 	}
 }

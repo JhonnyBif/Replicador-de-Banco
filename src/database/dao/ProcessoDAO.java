@@ -10,7 +10,7 @@ import database.model.Processo;
 
 public class ProcessoDAO {
 	
-	private String select = "select * from tb_processo where habilitado";
+	private String select = "select * from process where active";
 	private String selectByOrdem = "select * from tb_processo_tabela where id_processo = ? and habilitado order by ordem";
 	
 	private PreparedStatement pstSelect;
@@ -29,9 +29,9 @@ public class ProcessoDAO {
 		while (resultado.next()) {
 			Processo p = new Processo();
 			p.setId(resultado.getInt("id"));
-			p.setNome_processo(resultado.getString("nome_processo"));
-			p.setDescricao(resultado.getString("descricao"));
-			p.setHabilitado(resultado.getBoolean("habilitado"));
+			p.setName(resultado.getString("name"));
+			p.setDescription(resultado.getString("description"));
+			p.setActive(resultado.getBoolean("active"));
 			arlProcessos.add(p);
 		}
 		
@@ -47,9 +47,9 @@ public class ProcessoDAO {
 		while (resultado.next()) {
 			Processo p = new Processo();
 			p.setId(resultado.getInt("id"));
-			p.setNome_processo(resultado.getString("nome_processo"));
-			p.setDescricao(resultado.getString("descricao"));
-			p.setHabilitado(resultado.getBoolean("habilitado"));
+			p.setName(resultado.getString("nome_processo"));
+			p.setDescription(resultado.getString("descricao"));
+			p.setActive(resultado.getBoolean("habilitado"));
 			arlProcessos.add(p);
 		}
 		

@@ -2,45 +2,53 @@ package database.model;
 
 public class Direcao {
 	private int id;
-	private int id_processo;
-	private int id_conexao_origem;
-	private int id_conexao_destino;
-	private boolean habilitado;
+	private int processId;
+	private int originConnectionId;
+	private int destinyConnectionId;
+	private boolean active;
 	
 	public Direcao() {
 		
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getId_processo() {
-		return id_processo;
+
+	public int getProcessId() {
+		return processId;
 	}
-	public void setId_processo(int id_processo) {
-		this.id_processo = id_processo;
+
+	public void setProcessId(int processId) {
+		this.processId = processId;
 	}
-	public int getId_conexao_origem() {
-		return id_conexao_origem;
+
+	public int getOriginConnectionId() {
+		return originConnectionId;
 	}
-	public void setId_conexao_origem(int id_conexao_origem) {
-		this.id_conexao_origem = id_conexao_origem;
+
+	public void setOriginConnectionId(int originConnectionId) {
+		this.originConnectionId = originConnectionId;
 	}
-	public int getId_conexao_destino() {
-		return id_conexao_destino;
+
+	public int getDestinyConnectionId() {
+		return destinyConnectionId;
 	}
-	public void setId_conexao_destino(int id_conexao_destino) {
-		this.id_conexao_destino = id_conexao_destino;
+
+	public void setDestinyConnectionId(int destinyConnectionId) {
+		this.destinyConnectionId = destinyConnectionId;
 	}
-	public boolean isHabilitado() {
-		return habilitado;
+
+	public boolean isActive() {
+		return active;
 	}
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
-	
 	
 }

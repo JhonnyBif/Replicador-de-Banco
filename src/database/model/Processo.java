@@ -3,9 +3,9 @@ package database.model;
 public class Processo {
 
 	private int id;
-	private String nome_processo;
-	private String descricao;
-	private boolean habilitado;
+	private String name;
+	private String description;
+	private boolean active;
 	
 	public Processo() {
 		
@@ -19,32 +19,27 @@ public class Processo {
 		this.id = id;
 	}
 
-	public String getNome_processo() {
-		return nome_processo;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome_processo(String nome_processo) {
-		this.nome_processo = nome_processo;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public boolean isHabilitado() {
-		return habilitado;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
-	}
-	
-	
-	
-	
-	
+	public void setActive(boolean active) {
+		this.active = active;
+	}	
 }

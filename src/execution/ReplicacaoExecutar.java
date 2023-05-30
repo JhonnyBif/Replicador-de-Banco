@@ -29,7 +29,7 @@ public class ReplicacaoExecutar {
 											(
 												"localhost", 
 												"5432",
-												"postgres", 
+												"control", 
 												"postgres", 
 												"admin", 
 												ConnectionFactory.TIPO_BANCO_POSTGRES
