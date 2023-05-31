@@ -24,6 +24,7 @@ public class ConexoesVerificar {
 								conexoes.getDatabaseKindId().name()
 							);
 		if (connectionOrigem != null) {
+			System.out.println("connected to origin");
 			
 			conexoes = dao.select(id_conexao_destino);
 			Connection connectionDestino = ConnectionFactory.getConnection
@@ -36,7 +37,8 @@ public class ConexoesVerificar {
 						conexoes.getDatabaseKindId().name()
 					);
 			if (connectionDestino != null)	{
-				TabelasProcessar.execute(id_processo);
+				System.out.println("connected to destiny");
+				TabelasProcessar.execute(id_processo, connectionControle, connectionOrigem, connectionDestino);
 			}
 			else {
 				System.out.println("Não foi possível conectar no banco destino: "+conexoes.getAddress()+":"+conexoes.getPort());
