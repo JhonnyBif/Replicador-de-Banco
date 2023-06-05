@@ -19,16 +19,27 @@ public class TabelasProcessar {
 		ProcessoTabelaDAO dao = new ProcessoTabelaDAO(control);
 		List<ProcessTable> m = dao.selectAll();
 		
-		for (ProcessTable tabela : m) {
+		for (ProcessTable processTable : m) {
+			System.out.println("tabela: " + processTable);
 
-			String sql = tabela.getCondition().isEmpty() 
-							? "SELECT * FROM "+tabela.getOriginTableName() 
-							: "SELECT * FROM "+tabela.getOriginTableName()+" where id > "+tabela.getCondition();
+			String selectQuery = processTable.getCondition() == null || processTable.getCondition().isEmpty() 
+							? "SELECT * FROM "+processTable.getOriginTableName() 
+							: "SELECT * FROM "+processTable.getOriginTableName()+" where id > "+processTable.getCondition();
 			Statement stmt = origin.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(selectQuery);
 
+//			Statement stmt2 = destiny.createStatement();
+//			ResultSet rs2 = stmt2.executeQuery(selectQuery);
+			
+			// ------------------------------ DELETE
+			
+			String sqlDelete = "DELETE FROM " + processTable.getDestinyTableName();
+			PreparedStatement psDelete = destiny.prepareStatement(sqlDelete);
+			psDelete.executeUpdate();
+			
+			// ------------------------------ INSERT
 
-			String sqlInsert = "INSERT INTO "+tabela.getDestinyTableName()+" (";
+			String sqlInsert = "INSERT INTO "+processTable.getDestinyTableName()+" (";
 			String sqlValues = "VALUES (";
 
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -46,8 +57,8 @@ public class TabelasProcessar {
 			sqlInsert += ") ";
 			sqlValues += ") ";
 
-			String sql2 = sqlInsert + sqlValues;
-			PreparedStatement pstmt = destiny.prepareStatement(sql2);
+			String InsertQuery = sqlInsert + sqlValues;
+			PreparedStatement pstmt = destiny.prepareStatement(InsertQuery);
 
 			int ultimoIdInserido = 0;
 			
@@ -56,11 +67,43 @@ public class TabelasProcessar {
 			        Object value = rs.getObject(i);
 			        pstmt.setObject(i, value);
 			    }
-			    pstmt.executeUpdate();
+			    try {
+			    	pstmt.executeUpdate();
+				    ultimoIdInserido = rs.getInt("id");
+			    } catch (SQLException ex) {
+			    	System.out.println("id já inserido");
+			    }
 			}
-			ultimoIdInserido = rs.getInt("id");
 			
-			// Fazer um update setando a condicao.
+			PreparedStatement ps = control.prepareStatement("update process_table set condition = ?");
+			ps.setString(1, String.valueOf(ultimoIdInserido));
+			
+			// --------------------- UPDATE
+			
+//			rs = stmt.executeQuery(selectQuery);
+//			
+//			String sqlUpdate = "UPDATE "+processTable.getDestinyTableName()+" SET ";
+//
+//			for (int i = 1; i <= columnCount; i++) {
+//			    sqlUpdate += rsmd.getColumnName(i) + "=?";
+//			    if (i < columnCount) {
+//			        sqlUpdate += ", ";
+//			    }
+//			}
+//
+//			sqlUpdate += " WHERE id=?";
+//
+//			String UpdateQuery = sqlUpdate;
+//			PreparedStatement pstmtUpdate = destiny.prepareStatement(UpdateQuery);
+//			
+//			while(rs.next()) {
+//			    for (int i = 1; i <= columnCount; i++) {
+//			        Object value = rs.getObject(i);
+//			        pstmtUpdate.setObject(i, value);
+//			    }
+//			    pstmtUpdate.setObject(columnCount + 1, rs.getObject("id"));
+//			    pstmtUpdate.executeUpdate();
+//			}
 			
 			
 		}		
