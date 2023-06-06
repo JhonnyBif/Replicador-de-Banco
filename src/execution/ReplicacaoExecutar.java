@@ -14,7 +14,7 @@ import database.model.Processo;
 
 public class ReplicacaoExecutar {
 		
-	public static void execute(long sleepReplication) throws SQLException {
+	public static void execute(long sleepReplication, Boolean realTransfer) throws SQLException {
 		
 		new Thread(new Runnable() {
 			
@@ -36,7 +36,7 @@ public class ReplicacaoExecutar {
 											);
 						
 						if (connectionControle != null) {
-							ProcessoVerificar.execute(connectionControle);	
+							ProcessoVerificar.execute(connectionControle, realTransfer);	
 						}
 						else {
 							System.out.println("Não foi possível conectar no banco do replicador");

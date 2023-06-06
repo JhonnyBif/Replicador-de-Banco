@@ -12,12 +12,12 @@ import database.dao.ProcessoTabelaDAO;
 import database.model.ProcessTable;
 
 public class TabelasProcessar {
-	public static void execute(int id_processo, Connection control, Connection origin, Connection destiny) throws SQLException {
+	public static void execute(int id_processo, Connection control, Connection origin, Connection destiny, Boolean realTransfer) throws SQLException {
 		
 		System.out.println(id_processo);
 		
 		ProcessoTabelaDAO dao = new ProcessoTabelaDAO(control);
-		List<ProcessTable> m = dao.selectAll();
+		List<ProcessTable> m = dao.selectAll(realTransfer);
 		
 		for (ProcessTable processTable : m) {
 			System.out.println("tabela: " + processTable);
