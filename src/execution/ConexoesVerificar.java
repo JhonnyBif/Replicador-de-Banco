@@ -8,7 +8,7 @@ import database.dao.ConexoesDAO;
 import database.model.Conexao;
 
 public class ConexoesVerificar {
-	public static void execute(Connection connectionControle, int id_conexao_origem, int id_conexao_destino, int id_processo) throws SQLException {
+	public static void execute(Connection connectionControle, int id_conexao_origem, int id_conexao_destino, int id_processo, Boolean realTransfer) throws SQLException {
 		
 		ConexoesDAO dao = new ConexoesDAO(connectionControle);
 		Conexao conexoes = dao.select(id_conexao_origem);
@@ -38,7 +38,7 @@ public class ConexoesVerificar {
 					);
 			if (connectionDestino != null)	{
 				System.out.println("connected to destiny");
-				TabelasProcessar.execute(id_processo, connectionControle, connectionOrigem, connectionDestino);
+				TabelasProcessar.execute(id_processo, connectionControle, connectionOrigem, connectionDestino, realTransfer);
 			}
 			else {
 				System.out.println("Não foi possível conectar no banco destino: "+conexoes.getAddress()+":"+conexoes.getPort());

@@ -10,10 +10,12 @@ import database.model.ProcessTable;
 
 public class ProcessoTabelaDAO {
 	
-	private String select = "select * from process_table where real_transfer";
+	private String select = "select * from process_table";
+	private String selectWhereRealTransfer = "select * from process_table where real_transfer";
 	private String selectByOrdem = "select * from process_table where process_id = ? and real_transfer order by order";
 	
 	private PreparedStatement pstSelect;
+	private PreparedStatement pstSelectWhereRealTransfer;
 	private PreparedStatement pstSelectByOrdem;
 	
 	public ProcessoTabelaDAO(Connection conn) throws SQLException {
@@ -21,11 +23,11 @@ public class ProcessoTabelaDAO {
 		pstSelectByOrdem = conn.prepareStatement(selectByOrdem);
 	}
 	
-	public ArrayList<ProcessTable> selectAll() throws SQLException {
+	public ArrayList<ProcessTable> selectAll(Boolean whereRealTransfer) throws SQLException {
 		
 		ArrayList<ProcessTable> arlProcessos = new ArrayList<ProcessTable>();
 		
-		ResultSet resultado = pstSelect.executeQuery();
+		ResultSet resultado = whereRealTransfer ? pstSelectWhereRealTransfer.executeQuery() : pstSelect.executeQuery();
 		while (resultado.next()) {
 			ProcessTable p = new ProcessTable();
 			p.setId(resultado.getInt("id"));
