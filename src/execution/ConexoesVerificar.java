@@ -13,6 +13,7 @@ public class ConexoesVerificar {
 		ConexoesDAO dao = new ConexoesDAO(connectionControle);
 		Conexao conexoes = dao.select(id_conexao_origem);
 		
+		
 		// Faz a conexão no banco de controle ...
 		Connection connectionOrigem = ConnectionFactory.getConnection
 							(
@@ -23,6 +24,7 @@ public class ConexoesVerificar {
 								conexoes.getPassword(), 
 								conexoes.getDatabaseKindId().name()
 							);
+		
 		if (connectionOrigem != null) {
 			System.out.println("connected to origin");
 			

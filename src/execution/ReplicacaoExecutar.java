@@ -29,9 +29,9 @@ public class ReplicacaoExecutar {
 											(
 												"localhost", 
 												"5432",
-												"control", 
+												"replicador", 
 												"postgres", 
-												"admin", 
+												"12345", 
 												ConnectionFactory.TIPO_BANCO_POSTGRES
 											);
 						
