@@ -33,26 +33,8 @@ public class Replicacao extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField txt_tempoReplicacao;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Replicacao frame = new Replicacao();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JFormattedTextField txt_tempoReplicacao;
 	
-	
-
 	/**
 	 * Create the frame.
 	 */
@@ -125,7 +107,7 @@ public class Replicacao extends JFrame {
 		contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		
-		JFormattedTextField txt_tempoReplicacao = new JFormattedTextField(formatter);
+		txt_tempoReplicacao = new JFormattedTextField(formatter);
 		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
 		gbc_textField_2.fill = GridBagConstraints.BOTH;
 		gbc_textField_2.gridwidth = 4;
