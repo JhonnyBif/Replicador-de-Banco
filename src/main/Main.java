@@ -3,13 +3,17 @@ package main;
 import java.sql.SQLException;
 
 import execution.ReplicacaoExecutar;
+import graphic.Replicacao;
 
 public class Main {
-	public static void main(String[] args) {
-		try {
-			ReplicacaoExecutar.execute(45000);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public static Replicacao rep;
+	public Main() {
+		rep = new Replicacao();
+		rep.setVisible(true);
 	}
+	public static void main(String[] args) {
+		
+		new Main();
+	}
+
 }
