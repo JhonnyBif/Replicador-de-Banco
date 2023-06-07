@@ -19,12 +19,14 @@ import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Insets;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
@@ -34,6 +36,8 @@ public class Replicacao extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JFormattedTextField txt_tempoReplicacao;
+	private JProgressBar progressBar;
+	private int qtTotal;
 	
 	/**
 	 * Create the frame.
@@ -47,14 +51,14 @@ public class Replicacao extends JFrame {
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 620, 340);
+		setBounds(100, 100, 450, 340);
 		contentPane = new JPanel();
 		contentPane.setForeground(Color.GREEN);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{25, 150, 89, 85, 75, 10, 0};
+		gbl_contentPane.columnWidths = new int[]{20, 50, 100, 70, 80, 20, 0};
 		gbl_contentPane.rowHeights = new int[]{10, 20, 20, 20, 20, 20, 20, 20, 20, 10, 10, 10, 20, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -63,6 +67,7 @@ public class Replicacao extends JFrame {
 		JLabel lblNewLabel = new JLabel("Banco Origem");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.gridwidth = 2;
 		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 2;
@@ -82,6 +87,7 @@ public class Replicacao extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Banco Destino");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.gridwidth = 2;
 		gbc_lblNewLabel_1.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 2;
@@ -101,6 +107,7 @@ public class Replicacao extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("Tempo de Intervalo de Replicação (s)");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.gridwidth = 2;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2.gridx = 2;
 		gbc_lblNewLabel_2.gridy = 7;
@@ -122,6 +129,7 @@ public class Replicacao extends JFrame {
 		comboBox.addItem("Completo");
 		comboBox.addItem("Parcial");
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 2;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.fill = GridBagConstraints.BOTH;
 		gbc_comboBox.gridx = 1;
@@ -135,7 +143,7 @@ public class Replicacao extends JFrame {
 		            int tempoReplicacao = Integer.parseInt(txt_tempoReplicacao.getText());
 		            String tipoReplicacao = comboBox.getSelectedItem().toString();
 		            boolean isParcial = tipoReplicacao.equals("Parcial");
-		            
+		            startProgress();
 		            
 		            ReplicacaoExecutar.execute(tempoReplicacao * 1000, isParcial);
 		        } catch (SQLException t) {
@@ -146,7 +154,8 @@ public class Replicacao extends JFrame {
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.BOTH;
+		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
+		gbc_btnNewButton.fill = GridBagConstraints.VERTICAL;
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton.gridx = 3;
 		gbc_btnNewButton.gridy = 10;
@@ -161,21 +170,62 @@ public class Replicacao extends JFrame {
 		btnCancel.setForeground(Color.RED);
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
-		gbc_btnCancel.fill = GridBagConstraints.VERTICAL;
+		gbc_btnCancel.fill = GridBagConstraints.BOTH;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.gridx = 4;
 		gbc_btnCancel.gridy = 10;
 		contentPane.add(btnCancel, gbc_btnCancel);
 		
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.fill = GridBagConstraints.BOTH;
 		gbc_progressBar.gridwidth = 4;
 		gbc_progressBar.insets = new Insets(0, 0, 0, 5);
 		gbc_progressBar.gridx = 1;
 		gbc_progressBar.gridy = 12;
+		progressBar.setStringPainted(true);
+		progressBar.setForeground(Color.darkGray);
 		contentPane.add(progressBar, gbc_progressBar);
+		
+		
 	}
+	
+	 public void startProgress() {
+	        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+	            @Override
+	            protected Void doInBackground() throws Exception {
+	                for (int i = 0; i <= 100; i++) {
+	                    Thread.sleep(33); // Simulando algum trabalho sendo feito
+
+	                    publish(i); // Atualiza o valor do progresso
+
+	                    if (isCancelled()) {
+	                        break;
+	                    }
+	                }
+
+	                return null;
+	            }
+
+	            @Override
+	            protected void process(List<Integer> chunks) {
+	                // Atualiza a interface do usuário com os valores intermediários do progresso
+	                int progress = chunks.get(chunks.size() - 1);
+	                progressBar.setValue(progress);
+	            }
+
+	            @Override
+	            protected void done() {
+	                // Tarefa concluída
+	                progressBar.setValue(100);
+	            }
+	        };
+
+	        worker.execute(); // Inicia a tarefa em segundo plano
+	    }
+	
+	
+	
 	public void setDataBaseOrigem(String nome) {
 		this.textField.setText(nome);
 	}
