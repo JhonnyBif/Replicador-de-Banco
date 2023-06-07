@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
 
 import execution.ReplicacaoExecutar;
 
@@ -12,6 +13,8 @@ import javax.swing.JInternalFrame;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Insets;
@@ -30,7 +33,7 @@ public class Replicacao extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txt_tempoReplicacao;
 
 	/**
 	 * Launch the application.
@@ -47,14 +50,22 @@ public class Replicacao extends JFrame {
 			}
 		});
 	}
+	
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public Replicacao() {
+		
+		NumberFormatter formatter = new NumberFormatter();
+	    formatter.setValueClass(Integer.class);
+	    formatter.setMinimum(0);
+	    formatter.setAllowsInvalid(false);
+		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 325);
+		setBounds(100, 100, 620, 340);
 		contentPane = new JPanel();
 		contentPane.setForeground(Color.GREEN);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,8 +73,8 @@ public class Replicacao extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{25, 150, 89, 85, 75, 10, 0};
-		gbl_contentPane.rowHeights = new int[]{10, 0, 20, 10, 0, 20, 10, 0, 20, 10, 10, 10, 20, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowHeights = new int[]{10, 20, 20, 20, 20, 20, 20, 20, 20, 10, 10, 10, 20, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
@@ -105,7 +116,7 @@ public class Replicacao extends JFrame {
 		contentPane.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Tipo de Banco");
+		JLabel lblNewLabel_2 = new JLabel("Tempo de Intervalo de Replicação (s)");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
@@ -113,27 +124,16 @@ public class Replicacao extends JFrame {
 		gbc_lblNewLabel_2.gridy = 7;
 		contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		textField_2 = new JTextField();
+		
+		JFormattedTextField txt_tempoReplicacao = new JFormattedTextField(formatter);
 		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
 		gbc_textField_2.fill = GridBagConstraints.BOTH;
 		gbc_textField_2.gridwidth = 4;
 		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_2.gridx = 1;
 		gbc_textField_2.gridy = 8;
-		contentPane.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
-		
-		JButton btnNewButton = new JButton("Start");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { 
-				try {
-					ReplicacaoExecutar.execute(45000);
-				} catch (SQLException t) {
-					t.printStackTrace();
-				}
-
-			}
-		});
+		contentPane.add(txt_tempoReplicacao, gbc_textField_2);
+		txt_tempoReplicacao.setColumns(10);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setToolTipText("Selecionar");
@@ -145,6 +145,23 @@ public class Replicacao extends JFrame {
 		gbc_comboBox.gridx = 1;
 		gbc_comboBox.gridy = 10;
 		contentPane.add(comboBox, gbc_comboBox);
+		
+		JButton btnNewButton = new JButton("Start");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				try {
+		            int tempoReplicacao = Integer.parseInt(txt_tempoReplicacao.getText());
+		            String tipoReplicacao = comboBox.getSelectedItem().toString();
+		            boolean isParcial = tipoReplicacao.equals("Parcial");
+		            
+		            
+		            ReplicacaoExecutar.execute(tempoReplicacao * 1000, isParcial);
+		        } catch (SQLException t) {
+		            t.printStackTrace();
+		        }
+
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.fill = GridBagConstraints.BOTH;
@@ -177,5 +194,12 @@ public class Replicacao extends JFrame {
 		gbc_progressBar.gridy = 12;
 		contentPane.add(progressBar, gbc_progressBar);
 	}
-
+	public void setDataBaseOrigem(String nome) {
+		this.textField.setText(nome);
+	}
+	
+	public void setDataBaseDestino(String nome) {
+		this.textField_1.setText(nome);
+	}
+			
 }

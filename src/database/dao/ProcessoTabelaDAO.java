@@ -20,6 +20,7 @@ public class ProcessoTabelaDAO {
 	
 	public ProcessoTabelaDAO(Connection conn) throws SQLException {
 		pstSelect = conn.prepareStatement(select);
+		pstSelectWhereRealTransfer = conn.prepareStatement(selectWhereRealTransfer);
 		pstSelectByOrdem = conn.prepareStatement(selectByOrdem);
 	}
 	
