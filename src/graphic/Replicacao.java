@@ -13,12 +13,14 @@ import javax.swing.JInternalFrame;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Insets;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
@@ -26,9 +28,16 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+
+import javax.swing.JOptionPane;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 public class Replicacao extends JFrame {
 
@@ -38,6 +47,9 @@ public class Replicacao extends JFrame {
 	private JFormattedTextField txt_tempoReplicacao;
 	private JProgressBar progressBar;
 	private int qtTotal;
+
+	private Timer timer;
+	private int contador = 10;
 	
 	/**
 	 * Create the frame.
@@ -143,9 +155,10 @@ public class Replicacao extends JFrame {
 		            int tempoReplicacao = Integer.parseInt(txt_tempoReplicacao.getText());
 		            String tipoReplicacao = comboBox.getSelectedItem().toString();
 		            boolean isParcial = tipoReplicacao.equals("Parcial");
-		            startProgress();
-		            
+		            ReplicacaoExecutar replicacaoExecutar = new ReplicacaoExecutar(Replicacao.this);
 		            ReplicacaoExecutar.execute(tempoReplicacao * 1000, isParcial);
+		            
+		            
 		        } catch (SQLException t) {
 		            t.printStackTrace();
 		        }
@@ -195,9 +208,9 @@ public class Replicacao extends JFrame {
 	            @Override
 	            protected Void doInBackground() throws Exception {
 	                for (int i = 0; i <= 100; i++) {
-	                    Thread.sleep(33); // Simulando algum trabalho sendo feito
+	                    Thread.sleep(33);
 
-	                    publish(i); // Atualiza o valor do progresso
+	                    publish(i); 
 
 	                    if (isCancelled()) {
 	                        break;
@@ -209,23 +222,49 @@ public class Replicacao extends JFrame {
 
 	            @Override
 	            protected void process(List<Integer> chunks) {
-	                // Atualiza a interface do usuário com os valores intermediários do progresso
 	                int progress = chunks.get(chunks.size() - 1);
 	                progressBar.setValue(progress);
 	            }
 
 	            @Override
 	            protected void done() {
-	                // Tarefa concluída
-	                progressBar.setValue(100);
+	            	progressBar.setValue(100);
+	            	iniciarContador();
 	            }
 	        };
 
-	        worker.execute(); // Inicia a tarefa em segundo plano
+	        worker.execute(); 
 	    }
-	
-	
-	
+	 private void iniciarContador() {
+		 Date dataAtual = new Date();
+		    String mensagem = "Replicação concluida. Data: " + dataAtual.toString();
+		    exibirMensagemTemporaria(mensagem, 2000);
+	    }
+
+	    private void exibirMensagemTemporaria(String mensagem, int tempoExibicao) {
+	        JDialog dialog = new JDialog(this, "Mensagem", true);
+	        dialog.setSize(500, 150);
+	        dialog.setLocationRelativeTo(this);
+	        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+	        JLabel label = new JLabel(mensagem);
+	        label.setHorizontalAlignment(SwingConstants.CENTER);
+	        label.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	        dialog.add(label);
+
+	        Timer timer = new Timer(tempoExibicao, new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                dialog.dispose(); // Fecha o diálogo após o tempo de exibição
+	            }
+	        });
+	        progressBar.setValue(0);
+	        timer.setRepeats(false);
+	        timer.start();
+
+	        dialog.setVisible(true);
+	    }
+	    
 	public void setDataBaseOrigem(String nome) {
 		this.textField.setText(nome);
 	}
