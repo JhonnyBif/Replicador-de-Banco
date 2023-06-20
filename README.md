@@ -1,11 +1,11 @@
 # Replicador-de-Banco
 
 Contributors:<br>
-Jhonny Mezzari;
-João Vitor Alves Rocha;
-Leonardo Spillere;
-Leonardo Zambrana;
-Natanael Alves;
+Jhonny Mezzari<br>
+João Vitor Alves Rocha<br>
+Leonardo Spillere<br>
+Leonardo Zambrana<br>
+Natanael Alves<br>
 
 ### Usage
 - Adicionar processo no banco de controle (tabela process);
